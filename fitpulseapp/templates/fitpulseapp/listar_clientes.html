@@ -1,7 +1,7 @@
 {% extends 'fitpulseapp/base.html' %}
 
 {% block content %}
-<div class="d-flex justify-content-betwen align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3">
     <h2>Listado de Clientes</h2>
     <a href="{% url 'agregar_cliente' %}" class="btn btn-primary">+ Nuevo Cliente</a>
 </div>
@@ -10,37 +10,41 @@
     <table class="table table-hover align-middle">
         <thead class="table-dark">
             <tr>
-                <th>Fotos</th>
+                <th>Foto</th>
                 <th>Rut</th>
                 <th>Nombre Completo</th>
                 <th>Email</th>
                 <th>Teléfono</th>
                 <th>Fecha Registro</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-            {% for Cliente in Cliente %}
+            {% for cliente in clientes %}
             <tr>
                 <td>
                     {% if cliente.foto %}
-                     <img src="{{ cliente.foto.url }}" alt="{{cliente.nombre}}" class="rounded-circle" width="50" height="50" style="object-fit: cover;">
+                    <img src="{{ cliente.foto.url }}" alt="{{ cliente.nombre }}" class="rounded-circle" width="50" height="50" style="object-fit: cover;">
                     {% else %}
-                     <span class="badge bg-secondary">Sin foto</span>
+                    <span class="badge bg-secondary">Sin foto</span>
                     {% endif %}
                 </td>
-                <td><strong>{{ cliente_rut }}</strong></td>
+                <td><strong>{{ cliente.rut }}</strong></td>
                 <td>{{ cliente.nombre }} {{ cliente.apellido }}</td>
                 <td>{{ cliente.email }}</td>
                 <td>{{ cliente.telefono }}</td>
-                <td>{{ cliente.fecha_registro|date:"d/m/y"}}</td>
+                <td>{{ cliente.fecha_registro|date:"d/m/Y" }}</td>
+                <td>
+                    <a href="{% url 'editar_cliente' cliente.rut %}" class="btn btn-sm btn-warning">Editar</a>
+                    <a href="{% url 'eliminar_cliente' cliente.rut %}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
             </tr>
-            {% empty%}
+            {% empty %}
             <tr>
-                <td colspan="6" class="text-center text-muted py-4">No hay clientes registrados aún.</td>
+                <td colspan="7" class="text-center text-muted py-4">No hay clientes registrados aún.</td>
             </tr>
             {% endfor %}
         </tbody>
-        </thead>
     </table>
 </div>
 {% endblock %}
